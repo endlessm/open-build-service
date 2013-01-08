@@ -617,6 +617,33 @@ sub deleterepo_susetags {
   qsystem('rm', '-rf', "$extrep/descr") if -d "$extrep/descr";
 }
 
+sub updaterepo_reprepro {
+  my ($prp, $extrep, @changed) = @_;
+
+  my $repo = "$extrepodir/$BSConfig::reprepository->{$prp}{'repository'}";
+  my $codename = $BSConfig::reprepository->{$prp}{'codename'};
+  my $component = $BSConfig::reprepository->{$prp}{'component'};
+
+  for my $f (@changed) {
+      if ($f =~ /\.changes/) {
+        print " Updated changes file => $f\n" ;
+        qsystem ('reprepro', '-b', $repo,
+          '--ignore=wrongdistribution',
+          '--ignore=updatedarchall',
+          '-C', $component,
+          'include', $codename,
+          "$extrep/$f");
+      } elsif ($f =~ /\.dsc/) {
+        print " Updated dsc file => $f\n" ;
+        qsystem ('reprepro', '-b', $repo,
+          '-C', $component,
+          '-P', 'standard',
+          '-S', 'main',
+          'includedsc', $codename, "$extrep/$f");
+      }
+  }
+}
+
 sub createrepo_debian {
   my ($extrep, $projid, $repoid, $data, $options) = @_;
 
@@ -2055,7 +2082,11 @@ sub publish {
     deleterepo_hdlist2($extrep, $projid, $xrepoid, $data);
   }
   if ($repotype{'debian'}) {
-    createrepo_debian($extrep, $projid, $xrepoid, $data, $repotype{'debian'});
+    if ($BSConfig::reprepository && $BSConfig::reprepository->{$prp}) {
+      updaterepo_reprepro($prp, $extrep, @changed)
+    } else {
+      createrepo_debian($extrep, $projid, $xrepoid, $data, $repotype{'debian'});
+    }
   } else {
     deleterepo_debian($extrep, $projid, $xrepoid, $data);
   }
