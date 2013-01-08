@@ -1439,7 +1439,7 @@ sub publish {
 	$p = "$1/$bin";
 	$p = $1 eq 'src' || $1 eq 'nosrc' ? "SRPMS/$bin" : "RPMS/$bin" if $repotype{'resarchhack'};
       } elsif ($bin =~ /^.+_[^_]+_([^_\.]+)\.deb$/) {
-	$p = "$1/$bin";
+	$p = "$arch/$bin";
       } elsif ($bin =~ /\.exe$/) {
 	$p = "$bin";
       } elsif ($bin =~ /\.d?rpm$/) {
@@ -1450,7 +1450,7 @@ sub publish {
       } elsif ($bin =~ /\.deb$/) {
 	# legacy format
 	my $q = Build::query("$r/$rbin", 'evra' => 1);
-	$p = "$q->{'arch'}/$q->{'name'}_$q->{'version'}";
+	$p = "$arch/$q->{'name'}_$q->{'version'}";
 	$p .= "-$q->{'release'}" if defined $q->{'release'};
 	$p .= "_$q->{'arch'}.deb";
       } elsif ($bin =~ /\.(?:pkg\.tar\.gz|pkg\.tar\.xz)$/) {
@@ -1473,6 +1473,8 @@ sub publish {
 	  $p = "$bin";
         } elsif ($bin =~ /\.squashfs$/) {
 	  $p = "$bin";	# for simpleimage builds
+	} elsif ($bin =~ /\.changes(?:\.sha256)?$/) {
+	  $p = "$arch/$bin";
 	} elsif ($bin =~ /\.diff\.(?:gz)(?:\.sha256)?$/) {
 	  $p = "$bin";
 	} elsif ($bin =~ /\.dsc(?:\.sha256)?$/) {
