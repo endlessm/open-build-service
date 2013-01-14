@@ -630,6 +630,7 @@ sub updaterepo_reprepro {
         qsystem ('reprepro', '-b', $repo,
           '--ignore=wrongdistribution',
           '--ignore=updatedarchall',
+          '-T', 'deb',
           '-C', $component,
           'include', $codename,
           "$extrep/$f");
