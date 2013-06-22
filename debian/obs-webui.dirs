@@ -1,0 +1,14 @@
+# starting the webui part
+/srv/www/obs/webui
+# sqlite3 needs write permissions
+/srv/www/obs/webui/db
+
+/srv/www/obs/webui/config
+/srv/www/obs/webui/config/environments
+/srv/www/obs/webui/config/initializers
+/srv/www/obs/webui/log
+
+/srv/www/obs/webui/tmp
+
+# themes
+/srv/www/obs/webui/public/themes/

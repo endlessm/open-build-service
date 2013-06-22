@@ -1,0 +1,2 @@
+srv/www/obs/docs/api                    srv/www/obs/api/public/schema
+etc/obs/api/config						srv/www/obs/api/config

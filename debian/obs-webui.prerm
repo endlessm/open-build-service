@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. /usr/share/debconf/confmodule
+. /usr/share/dbconfig-common/dpkg/prerm.mysql
+dbc_go obs-webui $@
+
+rm -f /srv/www/obs/webui/vendor/rails
+

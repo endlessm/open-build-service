@@ -1,0 +1,8 @@
+obs-server
+----------
+
+You need to make sure ruby default point to ruby1.8 to get obs-server
+works:
+  $ sudo update-alternatives --set ruby /usr/bin/ruby1.8
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 07 May 2013 22:12:48 +0800

@@ -1,0 +1,2 @@
+# Install all web parts. (Remove parts in rules file)
+src/webui                       /srv/www/obs/

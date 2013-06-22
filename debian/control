@@ -1,0 +1,72 @@
+Source: open-build-service
+Section: devel
+Priority: optional
+Maintainer: Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>
+Build-Depends:
+ debhelper (>= 9), build-essential, fdupes, libbssolv-perl, python-dev
+Standards-Version: 3.9.3
+Homepage: http://en.opensuse.org/Build_Service
+
+Package: obs-server
+Architecture: any
+Depends:
+ ${misc:Depends}, ${shlibs:Depends}, apt-utils, diffutils, dpkg (>= 1.16.5),
+ libbssolv-perl, libfile-sync-perl, libsocket-msghdr-perl,
+ obs-build, patch, reprepro, sysvinit-utils
+Recommends: createrepo (>= 0.9.8), obs-signd, slpd, yum
+Description: Open Build Service (server component)
+ The Open Build Service (OBS) backend is used to store all sources and
+ binaries. It also calculates the need for new build jobs and distributes
+ it.
+
+Package: obs-worker
+Architecture: any
+Depends:
+ ${misc:Depends}, ${shlibs:Depends}, apt-utils, binutils, bsdtar, curl,
+ debootstrap, dpkg (>= 1.16.5), libtimedate-perl, libxml-parser-perl,
+ libxml-simple-perl, lzma, rpm, screen, slptool
+Description: Open Build Service (build host component)
+ This is the obs build host, to be installed on each machine building
+ packages in this obs installation.  Install it alongside obs-server to
+ run a local playground test installation.
+
+Package: obs-api
+Architecture: any
+Depends:
+ ${misc:Depends}, ${shlibs:Depends}, apache2, dbconfig-common,
+ libapache2-mod-passenger, libapache2-mod-xforward, mysql-client,
+ mysql-server, ruby1.8, rubygems-integration, ruby-daemons,
+ ruby-erubis, ruby-json, ruby-mysql, ruby-nokogiri, ruby-rails-2.3,
+ ruby-rails-xss, ruby-rdoc
+Recommends: mysql-server
+Suggests: obs-server
+Description: Open Build Service (api)
+ This is the API server instance for the OBS.
+
+Package: obs-webui
+Architecture: any
+Depends:
+ ${misc:Depends}, ${shlibs:Depends}, apache2, dbconfig-common,
+ libapache2-mod-passenger, libapache2-mod-xforward, mysql-client,
+ opensuse-themes-obs
+Recommends: mysql-server
+Suggests: obs-server, obs-api
+Description: Open Build Service (webui)
+ This is the web client for the OBS.
+
+Package: obs-productconverter
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, obs-server
+Description: Open Build Service (product definition utility)
+ The obs_productconvert is a utility to create Kiwi- and Spec- files
+ from a product definition.
+
+Package: obs-utils
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, osc, ruby1.8
+Description: Open Build Service (utilities)
+ The obs-utils contains tools for Open Build Service. Including:
+  * obs_mirror_project - a tool to copy the binary data of a project
+    from one obs to another
+  * obs_project_update - a tool to copy a packages of a project from
+    one obs to another

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+#set -x
+
+if [ -f /usr/share/debconf/confmodule ]; then
+    . /usr/share/debconf/confmodule
+fi
+if [ -f /usr/share/dbconfig-common/dpkg/postrm.mysql ]; then
+    . /usr/share/dbconfig-common/dpkg/postrm.mysql
+    dbc_go obs-webui $@
+fi
+
+if [ "$1" = "purge" ]; then
+    rm -f /etc/obs/webui/config/database.yml
+    if which ucf >/dev/null 2>&1; then
+        ucf --purge /etc/obs/webui/config/database.yml
+    fi
+fi
+
+#DEBHELPER#

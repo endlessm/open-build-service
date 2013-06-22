@@ -1,0 +1,265 @@
+open-build-service (2.3.8-0co15) singularity; urgency=low
+
+  * Add patch to copy repository attributes when branching a package, SIN: #37
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Fri, 21 Jun 2013 21:27:56 -0600
+
+open-build-service (2.3.8-0co14) alphacentauri; urgency=low
+
+  * d/obs-worker.obsworker.init: replace obsrun occurences by obsworker
+  * d//obs-api.cron.d: disable rake updateissues cron. SIN: #55
+
+ -- Hector Oron <hector.oron@collabora.co.uk>  Tue, 18 Jun 2013 15:10:46 +0200
+
+open-build-service (2.3.8-0co13) singularity; urgency=low
+
+  * Redirect publisher stderr output to the log as well
+
+ -- Sjoerd Simons <sjoerd.simons@collabora.co.uk>  Thu, 13 Jun 2013 08:31:58 +0200
+
+open-build-service (2.3.8-0co12) singularity; urgency=low
+
+  * Add patch to bring users from hidden projects when branching a package. 
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Mon, 10 Jun 2013 13:15:25 -0600
+
+open-build-service (2.3.8-0co11) singularity; urgency=low
+
+  * Add ruby-rdoc dependency to obs-api
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Tue, 04 Jun 2013 20:32:46 -0600
+
+open-build-service (2.3.8-0co10) singularity; urgency=low
+
+  * Fix obs-api cron to send output to /dev/null for now.
+  * Patch out ci_reporter from Rakefiles by updating that patch.
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Fri, 31 May 2013 15:03:41 -0600
+
+open-build-service (2.3.8-0co9) singularity; urgency=low
+
+  * debian/obs-server.obspublisher.init: Don't wrap lines (damn you vim)
+
+ -- Sjoerd Simons <sjoerd@debian.org>  Fri, 31 May 2013 09:46:25 +0200
+
+open-build-service (2.3.8-0co8) singularity; urgency=low
+
+  * debian/obs-server.obspublisher.init: Set the GNUPGHOME environment
+    variable in the same was as is done in signd, such that reprepro can find
+    the repository keys (SIN: #36).
+
+ -- Sjoerd Simons <sjoerd.simons@collabora.co.uk>  Fri, 31 May 2013 09:35:00 +0200
+
+open-build-service (2.3.8-0co7) singularity; urgency=low
+
+  * Fix obs-server.postinst typo.
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Thu, 30 May 2013 14:11:01 -0600
+
+open-build-service (2.3.8-0co6) singularity; urgency=low
+
+  * Fix obs-build dependency since the package was renamed.
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Thu, 30 May 2013 10:39:07 -0600
+
+open-build-service (2.3.8-0co5) singularity; urgency=low
+
+  * debian/patches/0031-Add-support-for-using-MD5-crypt-as-used-by-unix.patch
+    + Added, support normal unix MD5 crypt method
+  * debian/obs-webui.postinst, debian/obs-server.postinst:
+    + Don't unconditionally overwrite configuration files.
+
+ -- Sjoerd Simons <sjoerd.simons@collabora.co.uk>  Wed, 29 May 2013 15:20:53 +0200
+
+open-build-service (2.3.8-0co4) singularity; urgency=low
+
+  * Fix obs-api and obs-webui postrm scripts.
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Tue, 28 May 2013 19:35:09 -0600
+
+open-build-service (2.3.8-0co3) singularity; urgency=low
+
+  * Move obs-api and obs-webui config under /etc/obs and symlink to it.
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Mon, 27 May 2013 15:26:36 -0600
+
+open-build-service (2.3.8-0co2) singularity; urgency=low
+
+  * Fix obsapidelayed init script to point to delayed_job rather than delayed_job.api
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Mon, 27 May 2013 13:38:54 -0600
+
+open-build-service (2.3.8-0co1) singularity; urgency=low
+
+  * New upstream release
+  * debian/patches/00*: Add patchs from the collabora-2.3.8 branch
+  * Rename source to open-build-service
+  * Make obs-webui & obs-api only recommand mysql and only suggest obs-server
+
+ -- Sjoerd Simons <sjoerd@debian.org>  Mon, 27 May 2013 17:19:59 +0200
+
+obs-server (2.3.0co13-5) wheezy; urgency=low
+
+  [ Andrew Lee (李健秋) ]
+  * debian/obs-worker.obsworker.init: make sure obsworker owns it's dirs.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Fri, 24 May 2013 18:24:28 +0800
+
+obs-server (2.3.0co13-4) wheezy; urgency=low
+
+  [ Jeremy Whiting ]
+  * Add patch to allow building against hidden projects
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Mon, 20 May 2013 19:22:34 +0800
+
+obs-server (2.3.0co13-3) wheezy; urgency=low
+
+  * debian/rules: move themes install into debian/obs-webui.install.
+  * debian/rules: drop useless lines.
+  * patches/0001-Add-support-for-armv6hl.patch: enable armv6hl support.
+  * debian/rules: Enable exec bit on src/backend/obs-dod-check.pl. (SIN: #14)
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Fri, 17 May 2013 20:00:48 +0800
+
+obs-server (2.3.0co13-2) earlgrey; urgency=low
+
+  * Bump revision to fit the packages in repo.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Fri, 17 May 2013 19:59:57 +0800
+
+obs-server (2.3.0co13-1) earlgrey; urgency=low
+
+  * Merging upstream version 2.3.0co13. 
+  * debian/obs-server.dirs: creates /etc/obs.
+  * debian/rules: install BSConfig.pm into /etc/obs/.
+  * debian/obs-server.links: creates /usr/lib/obs/server/BSConfig.pm links.
+  * Releasing together with RPM packages in earlgrey:tools. (BUG: #1695, #1696)
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 14 May 2013 04:15:54 +0800
+
+obs-server (2.3.0co12-10) earlgrey; urgency=low
+
+  * debian/obs-worker.{postinst,prerm}: use obsworker user instead of 
+    obsrun for builder. (SIN: #3)
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Mon, 13 May 2013 13:44:22 +0800
+
+obs-server (2.3.0co12-9) earlgrey; urgency=low
+
+  [ Jeremy Whiting ]
+  * Set FQDN in environments/production.rb during obs-webui postinst.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Fri, 10 May 2013 15:13:12 +0800
+
+obs-server (2.3.0co12-8) earlgrey; urgency=low
+
+  [ Jeremy Whiting ]
+  * Add obsrun creation and deletion to obs-server postinst and prerm. 
+    Remove obs-server dependency on obs-worker.
+  * Put runlevel 4 in Default-Start in init scripts.
+  * Remove obsstoragesetup init script from obs-worker package
+  * Fix prerm scripts by removing == bashism.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Thu, 09 May 2013 06:15:19 +0800
+
+obs-server (2.3.0co12-7) earlgrey; urgency=low
+
+  * debian/control: drop conflicts on ruby1.9.1, cause other packages 
+    might need that.
+  * debian/README.Debian: added a readme for set ruby default to ruby1.8.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 07 May 2013 22:31:26 +0800
+
+obs-server (2.3.0co12-6) earlgrey; urgency=low
+
+  * debian/control: specifc depends on ruby1.8 and conflicts on ruby1.9.1.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 07 May 2013 22:12:48 +0800
+
+obs-server (2.3.0co12-5) earlgrey; urgency=low
+
+  [ Jeremy Whiting ]
+  * Add dpkg >= 1.16.5 to obs-worker and obs-server packages.
+  * Put creation of /srv/obs/repos into obs-server and set it's ownership 
+    to obsrun:obsrun
+
+  [ Andrew Lee (李健秋) ]
+  * debian/control: Reorder dpkg and correct version syntax in depends.
+  * debian/control: bump version of recommends createrepo to 0.9.8.
+
+  [ Jeremy Whiting ]
+  * Add runlevel 2 to the start list for all service init scripts.
+
+  [ Andrew Lee (李健秋) ]
+  * debian/obs-api.*: make sure use correct www-data user and group to run.
+  * debian/obs-build.logrotate: correct log file owner permission.
+  * debian/obs-webui.logrotate: correct log file owner permission.
+  * debian/obs-webui.dirs: drop useless permission line.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 07 May 2013 02:30:33 +0800
+
+obs-server (2.3.0co12-4) earlgrey; urgency=low
+
+  [ Jeremy Whiting ]
+  * Fix logging by adding --no-close to start-stop-daemon calls.  
+    (Requires dpkg 1.16.5) Rename obsworker.default to 
+    obs-worker.obsworker.default so it will be part of the right package and 
+    have the right name where the init script expects to find it.
+  * Remove .vrns from default obsworker file hostnames.
+
+  [ Andrew Lee (李健秋) ]
+  * debian/obs-api.postrm: cleanup vendor/rails links.
+  * debian/control: re-sort depends.
+  * debian/control: added depends on obs-build-collabora for obs-server.
+  * Clean up useless files.
+  * debian/obs-server.obswarden.init: fixed script failed while uninstall.
+  * Added debian/obs-server.postrm file.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 30 Apr 2013 01:43:48 +0800
+
+obs-server (2.3.0co12-3) earlgrey; urgency=low
+
+  [ Jeremy Whiting ]
+  * Move /etc/default/obs-server to obs-server package.
+  * Put /etc/default/obs-worker in obs-worker package.
+  * Change obs-worker init script to be the same as previous obs-worker 
+    package that works.
+
+  [ Andrew Lee (李健秋) ]
+  * Added .gitignore.
+  * Cleanup upstream sources.
+  * Really cleanup upstream sources.
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Sat, 27 Apr 2013 05:00:21 +0800
+
+obs-server (2.3.0co12-2) earlgrey; urgency=low
+
+  * Fix build symlink. 
+
+ -- Hector Oron <hector.oron@collabora.co.uk>  Thu, 25 Apr 2013 21:13:12 +0200
+
+obs-server (2.3.0co12-1) earlgrey; urgency=low
+
+  * Use upstream tarball from production current.
+  * Package multiple tarballs for adding themes.
+  * Apply obs-server debian packaging delta patches.
+    - Add 0005-Fix-logger.patch
+  * d/control: add obs-server depend on libsocket-msghdr-perl.
+
+ -- Hector Oron <hector.oron@collabora.co.uk>  Thu, 25 Apr 2013 18:10:38 +0100
+
+obs-server (2.3.0co10-1) unstable; urgency=low
+
+  * Updated init scripts to work with non suse platforms.
+  * Use dbconfig-common to create mysql databases needed.
+  * Updated obs.conf apache2 file to work with debian apache2 configuration.
+  * Split obs-api into obs-api and obs-webui so each could create a mysql database.
+  * Add theme from opensuse-theme for webui themeing.
+
+ -- Jeremy Whiting <jeremy.whiting@collabora.com>  Wed, 13 Mar 2013 13:47:28 -0600
+
+obs-server (2.3.0co10-0) unstable; urgency=low
+
+  * Initial release (BUG: #411)
+
+ -- Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>  Tue, 25 Dec 2012 17:42:07 +0800

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if ! getent group obsrun > /dev/null; then
+    addgroup --system --quiet obsrun
+fi
+
+if ! getent passwd obsrun > /dev/null; then
+    adduser --system --quiet \
+        --ingroup obsrun --shell /bin/false \
+        --home /usr/lib/obs --no-create-home \
+        --shell /bin/false obsrun
+    usermod -c "User for build service backend" obsrun
+fi
+
+mkdir -p /srv/obs/repos
+chown obsrun:obsrun /srv/obs/repos
+
+if [ ! -f /srv/www/obs/overview/index.html ] ; then
+  FQHOSTNAME=`hostname -f`
+
+  sed -e "s,___WEBUI_URL___,https://$FQHOSTNAME,g" \
+      -e "s,___API_URL___,https://$FQHOSTNAME:444,g" \
+      -e "s,___REPO_URL___,http://$FQHOSTNAME:82,g" \
+        /srv/www/obs/overview/overview.html.TEMPLATE > /srv/www/obs/overview/index.html
+fi
+
+#DEBHELPER#
+

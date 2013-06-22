@@ -1,0 +1,4 @@
+# install obs mirror script and obs copy script
+dist/obs_mirror_project         /usr/sbin/
+dist/obs_project_update         /usr/sbin/
+

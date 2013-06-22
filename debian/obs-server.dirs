@@ -1,0 +1,7 @@
+/usr/bin
+/usr/sbin
+/srv/www/obs/api/log
+/srv/www/obs/api/tmp
+/srv/www/obs/webui/log
+/srv/www/obs/webui/tmp
+/etc/obs
