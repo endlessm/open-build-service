@@ -1002,7 +1002,9 @@ eval {
     }
 
     # we always publish kiwi...
-    if ((!%$unfinished && !$ctx->{'havedelayed'}) || $ctx->{'prptype'} eq 'kiwi') {
+    # Also always publish if a repository is configured to never block
+    if ((!%$unfinished && !$ctx->{'havedelayed'}) || $ctx->{'prptype'} eq 'kiwi' ||
+        ($ctx->{'repo'}->{'block'} && $ctx->{'repo'}->{'block'} eq 'never')) {
       ($state, $details) = $ctx->publish($state, $details);
     }
 
