@@ -1,3 +1,11 @@
+open-build-service (2.3.8-0co15endless1) eos-tools; urgency=medium
+
+  * debian/patches/endless-publish-reprepro-speedup.patch: Speedup repo
+    publishing by delaying reprepro export until all packages have been
+    included.
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Mon, 14 Apr 2014 17:52:06 -0700
+
 open-build-service (2.3.8-0co15) singularity; urgency=low
 
   * Add patch to copy repository attributes when branching a package, SIN: #37
