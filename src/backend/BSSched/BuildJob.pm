@@ -902,6 +902,7 @@ sub create {
     $binfo->{'release'} =~ s/\<CI_CNT\>/$release/g;
     $binfo->{'release'} =~ s/\<B_CNT\>/$bcnt/g;
   }
+  $binfo->{'profile'} = $bconf->{'profile'} if $bconf->{'profile'};
   my $debuginfo = $bconf->{'debuginfo'};
   $debuginfo = BSUtil::enabled($repoid, $proj->{'debuginfo'}, $debuginfo, $myarch);
   $debuginfo = BSUtil::enabled($repoid, $pdata->{'debuginfo'}, $debuginfo, $myarch);
