@@ -1,3 +1,12 @@
+open-build-service (2.3.8-0co15endless4) eos-tools; urgency=low
+
+  * debian/patches/endless-project-build-profile.patch: Really fix
+    profile setting to not pass empty profile to the build script. This
+    time we keep from setting the configuration in the buildinfo hash
+    unless the setting is non-empty.
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Fri, 20 Jun 2014 17:12:02 -0700
+
 open-build-service (2.3.8-0co15endless3) eos-tools; urgency=low
 
   * debian/patches/endless-project-build-profile.patch: Fix profile
