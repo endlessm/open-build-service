@@ -1,3 +1,13 @@
+open-build-service (2.3.8-0co15endless5) trusty; urgency=medium
+
+  * debian/patches/endless-ignore-updated-source.patch:
+    - Pass --ignore=updatedsource to reprepro when running includedsc to
+      allow source packages with the same version but different
+      checksums to be included in multiple codenames.
+  [endlessm/eos-shell#4528]
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Fri, 10 Apr 2015 10:52:19 -0700
+
 open-build-service (2.3.8-0co15endless4) eos-tools; urgency=low
 
   * debian/patches/endless-project-build-profile.patch: Really fix
