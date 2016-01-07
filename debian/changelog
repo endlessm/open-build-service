@@ -1,3 +1,16 @@
+open-build-service (2.3.8-0co15endless6) jessie; urgency=medium
+
+  * debian/patches/series:
+    - Comment out
+      0027-Revert-Add-debdiff-to-diffs-of-changed-.dsc-and-.deb.patch as
+      we want to get diffs from our server.
+  * debian/control:
+    - Add devscripts dependency to obs-server to ensure debdiff is
+      installed.
+  [endlessm/eos-shell#6225]
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Thu, 07 Jan 2016 15:58:52 -0800
+
 open-build-service (2.3.8-0co15endless5) trusty; urgency=medium
 
   * debian/patches/endless-ignore-updated-source.patch:

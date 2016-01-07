@@ -12,7 +12,7 @@ Architecture: any
 Depends:
  ${misc:Depends}, ${shlibs:Depends}, apt-utils, diffutils, dpkg (>= 1.16.5),
  libbssolv-perl, libfile-sync-perl, libsocket-msghdr-perl,
- obs-build, patch, reprepro, sysvinit-utils
+ obs-build, patch, reprepro, sysvinit-utils, devscripts
 Recommends: createrepo (>= 0.9.8), obs-signd, slpd, yum
 Description: Open Build Service (server component)
  The Open Build Service (OBS) backend is used to store all sources and
