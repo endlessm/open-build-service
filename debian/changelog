@@ -1,3 +1,15 @@
+open-build-service (2.3.8-0co15endless7) jessie; urgency=medium
+
+  * debian/patches/series:
+    - Uncomment
+      0027-Revert-Add-debdiff-to-diffs-of-changed-.dsc-and-.deb.patch as
+      debdiff is overkill and duplicates all the logic in BSSrcdiff.pm.
+  * debian/patches/endless-debian-diffs.patch:
+    - Make non-unified diffs work correctly for debian source packages.
+  [endlessm/eos-shell#6225]
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Thu, 21 Jan 2016 12:27:55 -0800
+
 open-build-service (2.3.8-0co15endless6) jessie; urgency=medium
 
   * debian/patches/series:
