@@ -580,6 +580,9 @@ my @simclasses = (
   'dsc',
   'changes',
   '(?:diff?|patch)(?:\.gz|\.bz2|\.xz)?',
+  'debian\.(?:tar|tar\.gz|tar\.bz2|tgz|tbz|tar\.xz)',
+  'orig\.(?:tar|tar\.gz|tar\.bz2|tgz|tbz|tar\.xz)',
+  'orig-[^.]+\.(?:tar|tar\.gz|tar\.bz2|tgz|tbz|tar\.xz)',
   '(?:tar|tar\.gz|tar\.bz2|tar\.xz|tgz|tbz|gem|obscpio)',
 );
 
@@ -613,6 +616,7 @@ sub findsim {
       }
       $fc =~ s/\.bz2$//;
       $fc =~ s/\.gz$//;
+      $fc =~ s/\.xz$//;
       next if $fc =~ /\.(?:spec|dsc|changes)$/;	# no compression here!
       if ($fc =~ /^(.*)\.([^\/]+)$/) {
 	$fc{$f} = $1;
@@ -641,7 +645,12 @@ sub findsim {
     my @s = grep {defined($ft{$_}) && $ft{$_} eq $ft} sort keys %s;
     my $fq = "\Q$fc\E";
     $fq =~ s/\\\././g;
-    $fq =~ s/[0-9.]+/.*/g;
+    if (grep {/\.dsc$/} @f) {
+      # Debian file - version is everything after _
+      $fq =~ s/_.*/_.*/;
+    } else {
+      $fq =~ s/[0-9.]+/.*/g;
+    }
     @s = grep {/^$fq$/} @s;
     if (@s) {
       $sim{$f} = $s[0];
@@ -672,7 +681,7 @@ sub srcdiff {
   my @new = sort keys %$new;
   my $sim = findsim(\@old, @new);
 
-  for my $extra ('changes', 'filelist', 'spec', 'dsc') {
+  for my $extra ('filelist', 'spec') {
     if ($extra eq 'filelist') {
       my @xold = sort keys %$old;
       my @xnew = sort keys %$new;
