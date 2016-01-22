@@ -38,6 +38,7 @@ use Data::Dumper;
 use Storable ();
 use Symbol;
 use JSON::XS ();
+use File::Temp qw/ tempdir /;
 
 use BSConfiguration;
 use BSRPC ':https';
@@ -5433,7 +5434,7 @@ sub sourcediff {
     BSServer::reply_file(\*F, $view eq 'xml' ? 'Content-Type: text/xml' : 'Content-Type: text/plain');
     return undef;
   }
-  my $tmpdir = "$uploaddir/srcdiff$$";
+  my $tmpdir = tempdir('srcdiffXXXXXX', TMPDIR => 1, CLEANUP => 1);
   my $d;
   my %xobscpio;
   mkdir_p($uploaddir);
