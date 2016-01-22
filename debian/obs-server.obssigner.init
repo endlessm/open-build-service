@@ -51,7 +51,7 @@ case "$1" in
 		echo "Initializing obssigner"
                 # FIXME: not nice, this should receive a proper daemon handling, 
                 #        including real logging, pid file and startproc
-		start-stop-daemon -b -x "$obsdir"/bs_signer -S --no-close >> "$logdir"/signer.log
+		start-stop-daemon -b -x "$obsdir"/bs_signer -S --no-close >> "$logdir"/signer.log 2>&1
 	;;
 	stop)
 		echo "Shutting down obssigner"

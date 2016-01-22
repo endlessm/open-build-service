@@ -49,7 +49,7 @@ case "$1" in
 		echo "Initializing obswarden"
                 # FIXME: not nice, this should receive a proper daemon handling, 
                 #        including real logging, pid file and startproc
-		start-stop-daemon -m -b -p $pidfile -x "$obsdir"/$DAEMON -S --no-close >> "$logdir"/warden.log
+		start-stop-daemon -m -b -p $pidfile -x "$obsdir"/$DAEMON -S --no-close >> "$logdir"/warden.log 2>&1
 	;;
 	stop)
 		echo "Shutting down obswarden"

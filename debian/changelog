@@ -1,3 +1,21 @@
+open-build-service (2.3.8-0co15endless8) jessie; urgency=medium
+
+  * debian/patches/endless-fix-diff-webview.patch:
+    - Patch from Srdjan Grubor to properly load CSS when displaying diffs
+      in the request or package rdiff view.
+    [endlessm/eos-shell#6280]
+  * debian/patches/endless-srcdiff-use-tmpdir.patch:
+    - Use /tmp when expanding archives for srcdiff to take advantage of
+      the tmpfs there.
+    [endlessm/eos-shell#6225]
+  * debian/obs-api.logrotate:
+  * debian/obs-webui.logrotate:
+    - Rotate apache logs, too. These were getting quite big.
+  * debian/obs-server.*.init:
+    - Redirect stderr to stdout to capture errors in logs, too.
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Fri, 22 Jan 2016 11:29:12 -0800
+
 open-build-service (2.3.8-0co15endless7) jessie; urgency=medium
 
   * debian/patches/series:

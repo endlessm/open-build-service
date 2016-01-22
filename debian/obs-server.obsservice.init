@@ -50,7 +50,7 @@ case "$1" in
 		echo "Initializing obsservice"
 		mkdir -p "$rundir" "$logdir" "$workdir"
 		chown obsrun:obsrun "$logdir" "$rundir" "$workdir"
-		start-stop-daemon -b -x "$obsdir"/bs_service -S --no-close >> "$logdir"/src_service.log
+		start-stop-daemon -b -x "$obsdir"/bs_service -S --no-close >> "$logdir"/src_service.log 2>&1
 	;;
 	stop)
 		echo "Shutting down obsservice"

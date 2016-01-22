@@ -51,7 +51,7 @@ case "$1" in
 		echo "Initializing obsdispatcher"
                 # FIXME: not nice, this should receive a proper daemon handling, 
                 #        including real logging, pid file and startproc
-	        start-stop-daemon -b -x "$obsdir"/bs_dispatch -S --no-close >> "$logdir"/dispatcher.log
+	        start-stop-daemon -b -x "$obsdir"/bs_dispatch -S --no-close >> "$logdir"/dispatcher.log 2>&1
 	;;
 	stop)
 		echo "Shutting down obsdispatcher"

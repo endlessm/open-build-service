@@ -51,7 +51,7 @@ case "$1" in
 		chown obsrun:obsrun "$logdir" "$rundir"
                 # FIXME: not nice, this should receive a proper daemon handling, 
                 #        including real logging, pid file and startproc
-		start-stop-daemon -b -x "$obsdir"/bs_repserver -S --no-close >> "$logdir"/rep_server.log
+		start-stop-daemon -b -x "$obsdir"/bs_repserver -S --no-close >> "$logdir"/rep_server.log 2>&1
 	;;
 	stop)
 		echo "Shutting down obsrepserver"
