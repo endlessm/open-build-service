@@ -558,6 +558,10 @@ sub tardiff {
       next if $l1{$f}->{'type'} eq $l2{$f}->{'type'} && (!defined($l1{$f}->{'info'}) || $l1{$f}->{'info'} eq $l2{$f}->{'info'});
       next if $l1{$f}->{'type'} eq 'gemdata' && $l2{$f}->{'type'} eq 'gemdata';
     }
+    if (defined($max) && $lcnt > $max) {
+      # No need to continue diffing if the max has been exceeded
+      last;
+    }
     $fmax = $max > $lcnt ? $max - $lcnt : 0 if defined $max;
     my $r = filediff(fixup($l1{$f}), fixup($l2{$f}), %opts, 'fmax' => $fmax);
     $r->{'name'} = $f;
