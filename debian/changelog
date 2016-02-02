@@ -1,3 +1,12 @@
+open-build-service (2.3.8-0co15endless9) jessie; urgency=medium
+
+  * debian/patches/endless-srcdiff-bail-tarlimit.patch:
+    - Bail out on diffing tarballs if the line count has exceeded the
+      requested limit to speed up large tarball diffs.
+  [endlessm/eos-shell#6225]
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Tue, 02 Feb 2016 12:54:19 -0800
+
 open-build-service (2.3.8-0co15endless8) jessie; urgency=medium
 
   * debian/patches/endless-fix-diff-webview.patch:
