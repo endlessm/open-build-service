@@ -124,6 +124,11 @@ Note: the --update-*-db calls are usually only needed when corrupt data has been
  --update-request-db
    Updates the index for all requests.
 
+ --purge-project <project> [--debug] [--dry-run]
+   Purge a deleted project and any sources unreferenced by other projects.
+   --debug for debug output
+   --dry-run to test removal
+
 Debug Options
 =============
 
@@ -727,6 +732,243 @@ while (@ARGV) {
     $ufc->{'update'} = [];
     push @{$ufc->{"update"}}, $updateinfo;
     writexml("$id/.updateinfo.xml", "$id/updateinfo.xml", $ufc, $BSXML::updateinfo);
+  } elsif ($arg eq "--purge-project" ) {
+    die("ERROR: need project as argument!\n") if @ARGV < 1;
+    my $project = shift @ARGV;
+    my $debug = 0;
+    my $dryrun = 0;
+    while (@ARGV) {
+      my $opt = shift @ARGV;
+      if ($opt eq "--debug") {
+        $debug = 1;
+      } elsif ($opt eq "--dry-run") {
+        $dryrun = 1;
+      } else {
+        die("ERROR: unrecognized option $opt\n");
+      }
+    }
+
+    my %keeptrees;
+    my %deletetrees;
+    my %treesfiles;
+
+    # make sure this is a deleted project
+    if (! -d "$projectsdir/_deleted/$project.pkg") {
+      die("ERROR: project $project does not seem to be deleted!\n")
+    }
+
+    # collect trees file hashes to keep and delete
+    my @projectdirs;
+    foreach my $prjdir (ls($projectsdir)) {
+      next if $prjdir eq "_deleted";
+      next if ! -d "$projectsdir/$prjdir";
+      push @projectdirs, "$projectsdir/$prjdir";
+    }
+    foreach my $prjdir (ls("$projectsdir/_deleted")) {
+      next if ! -d "$projectsdir/_deleted/$prjdir";
+      push @projectdirs, "$projectsdir/_deleted/$prjdir";
+    }
+
+    foreach my $prjdir (@projectdirs) {
+      my ($prjname) = $prjdir =~ m|^.*/(.*)\.pkg|;
+      foreach my $file (ls($prjdir)) {
+        if ($file =~ /(.+)\.(mrev|rev)(\.del)?$/) {
+          my @revs = BSFileDB::fdb_getall("$prjdir/$file", $srcrevlay);
+          foreach my $rev (@revs) {
+            my $hash = $rev->{'srcmd5'};
+            if ($prjdir eq "$projectsdir/_deleted/$project.pkg") {
+              $deletetrees{"$prjname-$1-$hash"} = "$treesdir/$prjname/$1/$hash-MD5SUMS";
+            } else {
+              $keeptrees{"$prjname-$1-$hash"} = "$treesdir/$prjname/$1/$hash-MD5SUMS";
+            }
+          }
+        }
+      }
+    }
+
+    # prune any kept trees from deletetrees
+    foreach my $key (keys %keeptrees) {
+      delete $deletetrees{$key};
+    }
+
+    if ($debug) {
+      print "all deletetrees:\n", join("\n", keys %deletetrees), "\n\n";
+      print "all keeptrees:\n", join("\n", keys %keeptrees), "\n\n";
+    }
+
+    # get all files from treesdir
+    my @treesdirs;
+    foreach my $prjdir (ls($treesdir)) {
+      next if ! -d "$treesdir/$prjdir";
+      push @treesdirs, "$treesdir/$prjdir";
+    }
+    push @treesdirs, $srcrepdir if $srcrepdir ne $treesdir;
+
+    if ($debug) {
+      print "all treesdirs:\n", join("\n", @treesdirs);
+      print "\n\n";
+    }
+
+    foreach my $dir (@treesdirs) {
+      next if ! -d $dir;
+      my ($prjname) = $dir =~ m|^.*/(.*)|;
+      foreach my $pkg (ls($dir)) {
+        my $pkgdir = "$dir/$pkg";
+        next if ! -d $pkgdir;
+        foreach my $file (ls($pkgdir)) {
+          if ($file =~ /(.+)-MD5SUMS$/) {
+            $treesfiles{"$prjname-$pkg-$1"} = "$pkgdir/$file";
+          }
+        }
+      }
+    }
+
+    if ($debug) {
+      print "all treesfiles:\n", join("\n", values %treesfiles), "\n\n";
+    }
+
+    # get all dir names in srcrepdir
+    # fetch all filenames in subdirectories
+    my %sourcefiles;
+    foreach my $dir (ls($srcrepdir)) {
+      next if $dir eq ":upload";
+      if (-d "$srcrepdir/$dir") {
+        foreach my $file (ls("$srcrepdir/$dir")) {
+          $sourcefiles{"$dir/$file"} = "$srcrepdir/$dir/$file";
+        }
+      }
+    }
+
+    if ($debug) {
+      print "all sourcefiles:\n", join("\n", values %sourcefiles), "\n\n";
+    }
+
+    # create map of files to delete from srcrepdir and treesdir
+    my %deletefiles;
+    foreach my $hash (keys %deletetrees) {
+      next if !exists $treesfiles{$hash};
+      $deletefiles{$treesfiles{$hash}} = undef;
+      my ($prjname, $pkg, $treehash) = (split(/-/, $hash));
+      open(F, '<', $treesfiles{$hash}) || die($!);
+      while (my $line = <F>) {
+        my ($filehash, $file) = split(/\s+/, $line);
+        my $srcfile = "$srcrepdir/$pkg/$filehash-$file";
+        $deletefiles{$srcfile} = undef;
+
+        # try to handle the trees link revision
+        if ($file eq '_link' && -e $srcfile) {
+          my $link = readxml($srcfile, $BSXML::link, 1);
+          next if ! $link;
+          my $linkprj = defined $link->{'project'} ? $link->{'project'} : $prjname;
+          my $linkpkg = defined $link->{'package'} ? $link->{'package'} : $pkg;
+          my $linkmd5;
+          if (defined $link->{'baserev'}) {
+            $linkmd5 = $link->{'baserev'};
+          } elsif (defined $link->{'rev'}) {
+            # resolve the numeric rev
+            my $linkrev = getrev($linkprj, $linkpkg, $link->{'rev'});
+            if ($linkrev && $linkrev->{'srcmd5'} ne 'empty') {
+              $linkmd5 = $linkrev->{'srcmd5'};
+            }
+          }
+          next if ! $linkmd5;
+
+          # calculate the link from the trees revision
+          my $linkhash = "$linkprj-$linkpkg-$linkmd5";
+          next if !exists $treesfiles{$linkhash};
+          my $md5c = "$linkmd5  /LINK\n$treehash  /LOCAL\n";
+          my $md5 = Digest::MD5::md5_hex($md5c);
+          my $localhash = "$prjname-$pkg-$md5";
+          if (exists $treesfiles{$localhash}) {
+            # also delete this tree file
+            $deletefiles{$treesfiles{$localhash}} = undef;
+          }
+        }
+      }
+      close(F);
+    }
+
+    if ($debug) {
+      print "files to delete:\n";
+      print join("\n", keys %deletefiles);
+      print "\n\n";
+    }
+
+    # create map of files to keep in srcrepdir and treesdir
+    my %keepfiles;
+    foreach my $hash (keys %keeptrees) {
+      next if !exists $treesfiles{$hash};
+      $keepfiles{$treesfiles{$hash}} = undef;
+      open(F, '<', $treesfiles{$hash}) || die($!);
+      my $pkg = (split(/-/, $hash))[1];
+      while (my $line = <F>) {
+        my ($filehash, $file) = split(/\s+/, $line);
+        $keepfiles{"$srcrepdir/$pkg/$filehash-$file"} = undef;
+      }
+      close(F);
+    }
+
+    if ($debug) {
+      print "files to keep:\n";
+      print join("\n", keys %keepfiles);
+      print "\n\n";
+    }
+
+    # prune keepfiles from deletefiles
+    foreach my $hash (keys %keepfiles) {
+      delete $deletefiles{$hash};
+    }
+
+    if ($debug) {
+      print "files to delete after pruning kept files:\n";
+      print join("\n", keys %deletefiles);
+      print "\n\n";
+    }
+
+    if (scalar(keys %deletefiles) == 0) {
+      print "nothing to delete\n";
+    } else {
+      my $deleted = 0;
+      my $deletedbytes = 0;
+
+      # delete files!
+      print "starting deletion process:\n" if $debug;
+      foreach my $path (keys %deletefiles) {
+        print "file:\t$path" if $debug;
+        if (-e $path) {
+          $deletedbytes += (stat($path))[7];
+          if ($dryrun || unlink $path) {
+            print " deleted\n" if $debug;
+            $deleted++;
+          } else {
+            print "\n" if $debug;
+            warn "Could not unlink $path: $!";
+          }
+        }
+      }
+
+      printf "\nDeleted %d files, Freed  %.3f KB.\n", $deleted, $deletedbytes/1024;
+    }
+
+    # Delete the project and trees directories
+    if (!$dryrun) {
+      my $prjsrcdir = "$projectsdir/_deleted/$project.pkg";
+      my $prjtreesdir = "$treesdir/$project";
+
+      # Completely remove the _deleted projects directory
+      print "Deleting $prjsrcdir\n";
+      BSUtil::cleandir($prjsrcdir);
+      rmdir($prjsrcdir);
+
+      # Try to remove empty trees directories
+      if (-d $prjtreesdir) {
+        print "Removing empty directories from $prjtreesdir\n";
+        foreach my $dir (ls($prjtreesdir)) {
+          rmdir("$prjtreesdir/$dir");
+        }
+        rmdir($prjtreesdir);
+      }
+    }
   } else {
     echo_help();
     exit(1)
