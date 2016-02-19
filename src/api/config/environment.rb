@@ -44,7 +44,7 @@ Rails::Initializer.run do |config|
 
   config.gem 'nokogiri'
   config.gem 'daemons'
-  config.gem 'delayed_job', :version => '<3.0'
+#  config.gem 'delayed_job', :version => '<3.0'
 #  config.gem 'exception_notification', :version => '<=1.1'
   config.gem 'erubis'
   config.gem 'rails_xss'
