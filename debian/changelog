@@ -1,3 +1,12 @@
+open-build-service (2.3.8-0co15endless12) jessie; urgency=medium
+
+  * Really patch out delayed_job dependency. The gem requirement was
+    commented out in
+    Patch-out-exception_notification-ci_reporter-and-del.patch, but that
+    wasn't in the git commit.
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Fri, 19 Feb 2016 11:32:33 -0800
+
 open-build-service (2.3.8-0co15endless11) jessie; urgency=medium
 
   * Fix empty build profile handling that was in
