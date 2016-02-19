@@ -124,8 +124,8 @@ Note: the --update-*-db calls are usually only needed when corrupt data has been
  --update-request-db
    Updates the index for all requests.
 
- --purge-project <project> [--debug] [--dry-run]
-   Purge a deleted project and any sources unreferenced by other projects.
+ --purge-project <project> [<project>...] [--debug] [--dry-run]
+   Purge deleted projects and any sources unreferenced by other projects.
    --debug for debug output
    --dry-run to test removal
 
@@ -734,12 +734,14 @@ while (@ARGV) {
     writexml("$id/.updateinfo.xml", "$id/updateinfo.xml", $ufc, $BSXML::updateinfo);
   } elsif ($arg eq "--purge-project" ) {
     die("ERROR: need project as argument!\n") if @ARGV < 1;
-    my $project = shift @ARGV;
+    my @projects;
     my $debug = 0;
     my $dryrun = 0;
     while (@ARGV) {
       my $opt = shift @ARGV;
-      if ($opt eq "--debug") {
+      if ($opt !~ "^--") {
+        push @projects, $opt;
+      } elsif ($opt eq "--debug") {
         $debug = 1;
       } elsif ($opt eq "--dry-run") {
         $dryrun = 1;
@@ -748,13 +750,17 @@ while (@ARGV) {
       }
     }
 
+    die("ERROR: no projects specified\n") if scalar(@projects) < 1;
+
     my %keeptrees;
     my %deletetrees;
     my %treesfiles;
 
-    # make sure this is a deleted project
-    if (! -d "$projectsdir/_deleted/$project.pkg") {
-      die("ERROR: project $project does not seem to be deleted!\n")
+    # make sure all the projects are deleted
+    foreach my $project (@projects) {
+      if (! -d "$projectsdir/_deleted/$project.pkg") {
+        die("ERROR: project $project does not seem to be deleted!\n")
+      }
     }
 
     # collect trees file hashes to keep and delete
@@ -773,13 +779,15 @@ while (@ARGV) {
       my ($prjname) = $prjdir =~ m|^.*/(.*)\.pkg|;
       foreach my $file (ls($prjdir)) {
         if ($file =~ /(.+)\.(mrev|rev)(\.del)?$/) {
+          my $pkg = $1;
           my @revs = BSFileDB::fdb_getall("$prjdir/$file", $srcrevlay);
           foreach my $rev (@revs) {
             my $hash = $rev->{'srcmd5'};
-            if ($prjdir eq "$projectsdir/_deleted/$project.pkg") {
-              $deletetrees{"$prjname-$1-$hash"} = "$treesdir/$prjname/$1/$hash-MD5SUMS";
+            if ($prjdir =~ m|/_deleted/| &&
+                scalar(grep {/^\Q${prjname}\E$/} @projects)) {
+              $deletetrees{"$prjname-$pkg-$hash"} = "$treesdir/$prjname/$pkg/$hash-MD5SUMS";
             } else {
-              $keeptrees{"$prjname-$1-$hash"} = "$treesdir/$prjname/$1/$hash-MD5SUMS";
+              $keeptrees{"$prjname-$pkg-$hash"} = "$treesdir/$prjname/$pkg/$hash-MD5SUMS";
             }
           }
         }
@@ -952,21 +960,23 @@ while (@ARGV) {
 
     # Delete the project and trees directories
     if (!$dryrun) {
-      my $prjsrcdir = "$projectsdir/_deleted/$project.pkg";
-      my $prjtreesdir = "$treesdir/$project";
+      foreach my $project (@projects) {
+        my $prjsrcdir = "$projectsdir/_deleted/$project.pkg";
+        my $prjtreesdir = "$treesdir/$project";
 
-      # Completely remove the _deleted projects directory
-      print "Deleting $prjsrcdir\n";
-      BSUtil::cleandir($prjsrcdir);
-      rmdir($prjsrcdir);
+        # Completely remove the _deleted projects directory
+        print "Deleting $prjsrcdir\n";
+        BSUtil::cleandir($prjsrcdir);
+        rmdir($prjsrcdir);
 
-      # Try to remove empty trees directories
-      if (-d $prjtreesdir) {
-        print "Removing empty directories from $prjtreesdir\n";
-        foreach my $dir (ls($prjtreesdir)) {
-          rmdir("$prjtreesdir/$dir");
+        # Try to remove empty trees directories
+        if (-d $prjtreesdir) {
+          print "Removing empty directories from $prjtreesdir\n";
+          foreach my $dir (ls($prjtreesdir)) {
+            rmdir("$prjtreesdir/$dir");
+          }
+          rmdir($prjtreesdir);
         }
-        rmdir($prjtreesdir);
       }
     }
   } else {
