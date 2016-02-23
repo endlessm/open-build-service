@@ -129,6 +129,9 @@ sub trunc_logfile {
 sub cleanup_job {
   if ($vm_tmpfs_mode) {
     qsystem("umount", $buildroot) && die("umount tmpfs failed: $!\n");
+  } else {
+    # Cleanup build output immediately
+    BSUtil::cleandir("$buildroot/.build.packages");
   }
 }
 
