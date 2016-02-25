@@ -1,3 +1,11 @@
+open-build-service (2.3.8-0co15endless13) jessie; urgency=medium
+
+  * Fix empty content returned on HTTP OK (200) by ensuring temp files
+    are not deleted before they can be streamed.
+    [endlessm/eos-shell#6237]
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Thu, 25 Feb 2016 10:45:58 -0800
+
 open-build-service (2.3.8-0co15endless12) jessie; urgency=medium
 
   * Really patch out delayed_job dependency. The gem requirement was
