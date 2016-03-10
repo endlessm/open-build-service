@@ -1403,7 +1403,7 @@ while (@ARGV) {
 
       # delete files!
       print "starting deletion process:\n" if $debug;
-      foreach my $path (keys %deletefiles) {
+      foreach my $path (sort keys %deletefiles) {
         print "file:\t$path" if $debug;
         if (-e $path) {
           $deletedbytes += (stat($path))[7];
@@ -1429,15 +1429,16 @@ while (@ARGV) {
         # Completely remove the _deleted projects directory
         print "Deleting $prjsrcdir\n";
         BSUtil::cleandir($prjsrcdir);
-        rmdir($prjsrcdir);
+        rmdir($prjsrcdir) || print("Could not delete $prjsrcdir\n");
 
         # Try to remove empty trees directories
         if (-d $prjtreesdir) {
           print "Removing empty directories from $prjtreesdir\n";
           foreach my $dir (ls($prjtreesdir)) {
-            rmdir("$prjtreesdir/$dir");
+            rmdir("$prjtreesdir/$dir") ||
+                print("Could not delete $prjtreesdir/$dir\n");
           }
-          rmdir($prjtreesdir);
+          rmdir($prjtreesdir) || print("Could not delete $prjtreesdir\n");
         }
       }
     }
