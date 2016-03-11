@@ -1,3 +1,10 @@
+open-build-service (2.3.8-0co15endless14) jessie; urgency=medium
+
+  * Improve bs_admin --purge-project feature to allow purging multiple
+    projects at once. (T4329)
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Thu, 10 Mar 2016 20:03:27 -0800
+
 open-build-service (2.3.8-0co15endless13) jessie; urgency=medium
 
   * Fix empty content returned on HTTP OK (200) by ensuring temp files
