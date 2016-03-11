@@ -967,16 +967,16 @@ while (@ARGV) {
         # Completely remove the _deleted projects directory
         print "Deleting $prjsrcdir\n";
         BSUtil::cleandir($prjsrcdir);
-        rmdir($prjsrcdir) || print("Could not delete $prjsrcdir\n");
+        rmdir($prjsrcdir) || warn "Could not delete $prjsrcdir: $!\n";
 
         # Try to remove empty trees directories
         if (-d $prjtreesdir) {
           print "Removing empty directories from $prjtreesdir\n";
           foreach my $dir (ls($prjtreesdir)) {
             rmdir("$prjtreesdir/$dir") ||
-                print("Could not delete $prjtreesdir/$dir\n");
+                warn "Could not delete $prjtreesdir/$dir: $!\n";
           }
-          rmdir($prjtreesdir) || print("Could not delete $prjtreesdir\n");
+          rmdir($prjtreesdir) || warn "Could not delete $prjtreesdir: $!\n";
         }
       }
     }
