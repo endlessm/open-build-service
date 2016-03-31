@@ -733,6 +733,7 @@ our $worker = [
         ],
         'processors',
         'jobs',         # compat for OBS 2.8 worker
+        'nativeonly',   # don't allow usage via the helper script
 	'memory',	# in MBytes
 	'swap',		# in MBytes
 	'disk',		# in MBytes
