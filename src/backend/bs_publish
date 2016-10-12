@@ -1504,7 +1504,7 @@ sub publish {
 	  $p = "$bin";
 	} elsif ($bin =~ /-Build\d.*\.(?:tbz|tgz|tar|tar\.gz|tar\.bz2|tar\.xz)(?:\.sha256)?$/) {
 	  $p = "$bin";
-	} elsif ($bin =~ /\.tar(?:\.(?:gz|bz2|xz))?(?:\.sha256)?$/) {
+	} elsif ($bin =~ /\.tar(?:\.(?:gz|bz2|xz))?(?:\.asc)?(?:\.sha256)?$/) {
 	  $p = "$bin";
         } elsif ($bin =~ /\.squashfs$/) {
 	  $p = "$bin";	# for simpleimage builds
