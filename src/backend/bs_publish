@@ -1092,7 +1092,7 @@ sub publish {
 	  $p = "$bin";
 	} elsif ($bin =~ /\.raw(:?\.install)?(:?\.sha256)?$/) {
 	  $p = "$bin";
-	} elsif ($bin =~ /\.tar\.(:?gz|bz2|xz)(:?\.sha256)?$/) {
+	} elsif ($bin =~ /\.tar\.(:?gz|bz2|xz)(:?\.asc)?(:?\.sha256)?$/) {
 	  $p = "$bin";
 	} elsif ($bin =~ /\.changes(:?\.sha256)?$/) {
 	  $p = "$arch/$bin";
