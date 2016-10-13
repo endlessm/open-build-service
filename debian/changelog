@@ -1,3 +1,9 @@
+open-build-service (2.3.8-0co15endless15) jessie; urgency=medium
+
+  * Support orig.tar detached signature files. (T13686)
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Thu, 13 Oct 2016 09:40:26 -0700
+
 open-build-service (2.3.8-0co15endless14) jessie; urgency=medium
 
   * Improve bs_admin --purge-project feature to allow purging multiple
