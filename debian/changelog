@@ -1,3 +1,11 @@
+open-build-service (2.3.8-0endless1) unstable; urgency=medium
+
+  * Release version 2.3.8-0endless1. There are no changes from the
+    previous version. This just provides a starting point for building
+    from git via jenkins-infra.
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Tue, 09 Jan 2018 14:50:56 -0600
+
 open-build-service (2.3.8-0co15endless15) jessie; urgency=medium
 
   * Support orig.tar detached signature files. (T13686)
