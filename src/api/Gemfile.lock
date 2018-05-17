@@ -159,6 +159,7 @@ GEM
     safe_yaml (1.0.4)
     sanitize (4.0.0)
       crass (~> 1.0.2)
+      nokogiri (>= 1.4.4)
       nokogumbo (= 1.4.1)
     sass (3.2.19)
     sass-rails (4.0.5)
