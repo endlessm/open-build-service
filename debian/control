@@ -24,7 +24,8 @@ Architecture: any
 Depends:
  ${misc:Depends}, ${shlibs:Depends}, apt-utils, binutils, bsdtar, curl,
  debootstrap, dpkg (>= 1.16.5), libtimedate-perl, libxml-parser-perl,
- libxml-simple-perl, lzma, rpm, screen, slptool, xz-utils
+ libxml-simple-perl, lzma, rpm, screen, xz-utils
+Recommends: slptool
 Description: Open Build Service (build host component)
  This is the obs build host, to be installed on each machine building
  packages in this obs installation.  Install it alongside obs-server to
