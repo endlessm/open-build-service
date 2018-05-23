@@ -1,17 +1,14 @@
-# configure apache web service (Renamed by rules file)
-# new default since OBS 2.3
-dist/obs-apache2.conf           /etc/apache2/vhosts.d/
-
-# configure lighttpd web service (Renamed by rules file)
-# default until OBS 2.1
-dist/obs-lighttpd.conf          /etc/lighttpd/vhosts.d/
-dist/rails.include              /etc/lighttpd/vhosts.d/
-dist/cleanurl-v5.lua            /etc/lighttpd/
-
 # Install all web and api parts. (Remove parts in rules file)
-src/api                                /srv/www/obs/
-
 # install apidocs
 # the html dir was not found in source.
-# docs/api/html                 /srv/www/obs/api/public/apidocs/
-docs/api/api/*.{rng,xsd}        /srv/www/obs/docs/api/
+docs/api/api/*.rng        /usr/share/obs/docs/api/
+docs/api/api/*.xsd        /usr/share/obs/docs/api/
+etc/logrotate.d/obs-api
+usr/share/obs/api/
+usr/share/obs/docs/api/
+
+usr/share/obs/overview/overview.html.TEMPLATE
+
+debian/localgem/*	/usr/share/obs/api/vendor/gems
+
+debian/rake-tasks.sh	/usr/share/obs/api/script/

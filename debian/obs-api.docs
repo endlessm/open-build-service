@@ -1,6 +1,8 @@
-dist/{README.UPDATERS,README.SETUP}
-docs/openSUSE.org.xml
-ReleaseNotes-*
-README
-COPYING
 AUTHORS
+ReleaseNotes-*
+dist/README.UPDATERS
+dist/README.SETUP
+dist/README.devel
+docs/openSUSE.org.xml
+src/backend/README
+debian/README.Debian

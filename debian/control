@@ -1,73 +1,251 @@
 Source: open-build-service
 Section: devel
 Priority: optional
-Maintainer: Andrew Lee (李健秋) <andrew.lee@collabora.co.uk>
-Build-Depends:
- debhelper (>= 9), build-essential, fdupes, libbssolv-perl, python-dev
-Standards-Version: 3.9.3
+Maintainer: Debian Ruby Extras Maintainers <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
+Uploaders: Andrew Lee (李健秋) <ajqlee@debian.org>,
+           Héctor Orón Martínez <zumbi@debian.org>,
+Build-Depends: debhelper (>= 9),
+               dh-systemd,
+               bundler,
+               fdupes,
+               libbssolv-perl,
+               default-mysql-server | mysql-server,
+               python-dev,
+               ruby-acts-as-list,
+               ruby-acts-as-tree,
+               ruby-addressable,
+               ruby-capybara,
+               ruby-chunky-png,
+               ruby-cliver,
+               ruby-clockwork,
+               ruby-cocoon,
+               ruby-codemirror-rails,
+               ruby-coderay,
+               ruby-crack,
+               ruby-cssmin,
+               ruby-daemons,
+               ruby-dalli,
+               ruby-delayed-job,
+               ruby-delayed-job-active-record,
+               ruby-docile,
+               ruby-erubis,
+               ruby-escape-utils,
+               ruby-execjs,
+               ruby-flot-rails,
+               ruby-font-awesome-rails,
+               ruby-haml,
+               ruby-hike,
+               ruby-i18n,
+               ruby-innertube,
+               ruby-joiner,
+               ruby-jquery-rails,
+               ruby-jquery-ui-rails,
+               ruby-json,
+               ruby-kaminari,
+               ruby-kgio,
+               ruby-ldap,
+               ruby-metaclass,
+               ruby-method-source,
+               ruby-middleware,
+               ruby-mime-types,
+               ruby-mysql2,
+               ruby-nokogiri,
+               ruby-parser,
+               ruby-pkg-config (>= 1.1.6),
+               ruby-pundit,
+               ruby-rails,
+               ruby-rails-tokeninput,
+               ruby-raindrops,
+               ruby-redcarpet,
+               ruby-responders,
+               ruby-riddle,
+               ruby-safe-yaml,
+               ruby-sanitize,
+               ruby-sass,
+               ruby-sass-rails,
+               ruby-sexp-processor,
+               ruby-slop,
+               ruby-sprite-factory,
+               ruby-sprockets,
+               ruby-thinking-sphinx,
+               ruby-thread-safe,
+               ruby-tzinfo,
+               ruby-uglifier,
+               ruby-websocket-driver,
+               ruby-xmlhash,
+               ruby-xpath,
+               ruby-yajl,
+               rubygems-integration,
+Standards-Version: 3.9.8
 Homepage: http://en.opensuse.org/Build_Service
 
 Package: obs-server
-Architecture: any
-Depends:
- ${misc:Depends}, ${shlibs:Depends}, apt-utils, diffutils, dpkg (>= 1.16.5),
- libbssolv-perl, libfile-sync-perl, libsocket-msghdr-perl,
- obs-build, patch, reprepro, sysvinit-utils, devscripts
-Recommends: createrepo (>= 0.9.8), obs-signd, slpd, yum
+Architecture: all
+Depends: apt-utils,
+         adduser,
+         diffutils,
+         git,
+         libbssolv-perl,
+         libcompress-raw-zlib-perl,
+         libfile-sync-perl,
+         libjson-xs-perl,
+         libnet-ssleay-perl,
+         libsocket-msghdr-perl,
+         libxml-parser-perl,
+         libxml-simple-perl,
+         obs-build,
+         obs-productconverter (>= ${binary:Version}),
+         patch,
+         reprepro,
+         sysvinit-utils (>= 2.88dsf-59),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: createrepo,
+            dpkg-dev,
+            gnupg2,
+            lvm2,
+            obs-signd,
+            slpd,
+            yum
 Description: Open Build Service (server component)
  The Open Build Service (OBS) backend is used to store all sources and
  binaries. It also calculates the need for new build jobs and distributes
  it.
 
 Package: obs-worker
-Architecture: any
-Depends:
- ${misc:Depends}, ${shlibs:Depends}, apt-utils, binutils, bsdtar, curl,
- debootstrap, dpkg (>= 1.16.5), libtimedate-perl, libxml-parser-perl,
- libxml-simple-perl, lzma, rpm, screen, xz-utils
-Recommends: slptool
+Architecture: all
+Depends: apt-utils,
+         adduser,
+         binutils,
+         bsdtar,
+         cpio,
+         curl,
+         debootstrap,
+         libcompress-raw-zlib-perl,
+         libtimedate-perl,
+         libxml-parser-perl,
+         libxml-simple-perl,
+         lsb-base (>= 3.0-6),
+         lvm2,
+         lzma,
+         psmisc,
+         rpm,
+         screen,
+         util-linux (>= 2.16),
+         xz-utils,
+         ${misc:Depends},
+         ${shlibs:Depends}
 Description: Open Build Service (build host component)
  This is the obs build host, to be installed on each machine building
- packages in this obs installation.  Install it alongside obs-server to
+ packages in this obs installation. Install it alongside obs-server to
  run a local playground test installation.
 
 Package: obs-api
-Architecture: any
-Depends:
- ${misc:Depends}, ${shlibs:Depends}, apache2, dbconfig-common,
- libapache2-mod-passenger, libapache2-mod-xforward, mysql-client,
- mysql-server, ruby1.8, rubygems-integration, ruby-daemons,
- ruby-erubis, ruby-json, ruby-mysql, ruby-nokogiri, ruby-rails-2.3,
- ruby-rails-xss, ruby-rdoc
-Recommends: mysql-server
+Architecture: all
+Depends: apache2,
+         dbconfig-common,
+         gsfonts,
+         libapache2-mod-passenger,
+         libapache2-mod-xforward,
+         libgd-gd2-perl,
+         libjs-bootstrap,
+         lsb-base (>= 3.0-6),
+         memcached,
+         default-mysql-client | mysql-client,
+         ruby,
+         ruby-acts-as-list,
+         ruby-acts-as-tree,
+         ruby-addressable,
+         ruby-capybara,
+         ruby-chunky-png,
+         ruby-cliver,
+         ruby-clockwork,
+         ruby-cocoon,
+         ruby-codemirror-rails,
+         ruby-coderay,
+         ruby-crack,
+         ruby-cssmin,
+         ruby-daemons,
+         ruby-dalli,
+         ruby-delayed-job,
+         ruby-delayed-job-active-record,
+         ruby-docile,
+         ruby-erubis,
+         ruby-escape-utils,
+         ruby-execjs,
+         ruby-flot-rails,
+         ruby-font-awesome-rails,
+         ruby-haml,
+         ruby-hike,
+         ruby-i18n,
+         ruby-innertube,
+         ruby-joiner,
+         ruby-jquery-rails,
+         ruby-jquery-ui-rails (>= 6.0.1),
+         ruby-json,
+         ruby-kaminari,
+         ruby-kgio,
+         ruby-ldap,
+         ruby-metaclass,
+         ruby-method-source,
+         ruby-middleware,
+         ruby-mime-types,
+         ruby-mysql2,
+         ruby-nokogiri,
+         ruby-parser,
+         ruby-pkg-config (>= 1.1.6),
+         ruby-pundit,
+         ruby-rails,
+         ruby-rails-tokeninput,
+         ruby-raindrops,
+         ruby-redcarpet,
+         ruby-responders,
+         ruby-riddle,
+         ruby-safe-yaml,
+         ruby-sanitize,
+         ruby-sass,
+         ruby-sass-rails,
+         ruby-sexp-processor,
+         ruby-slop,
+         ruby-sprite-factory,
+         ruby-sprockets,
+         ruby-thinking-sphinx,
+         ruby-thread-safe,
+         ruby-tzinfo,
+         ruby-uglifier,
+         ruby-websocket-driver,
+         ruby-xmlhash,
+         ruby-xpath,
+         ruby-yajl,
+         rubygems-integration,
+         sphinxsearch (>= 2.0.8),
+         unicorn,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: default-mysql-server | mysql-server
 Suggests: obs-server
+Breaks: obs-server (<= 2.7.1-3)
+Provides: obs-webui
 Description: Open Build Service (api)
  This is the API server instance for the OBS.
 
-Package: obs-webui
-Architecture: any
-Depends:
- ${misc:Depends}, ${shlibs:Depends}, apache2, dbconfig-common,
- libapache2-mod-passenger, libapache2-mod-xforward, mysql-client,
- opensuse-themes-obs
-Recommends: mysql-server
-Suggests: obs-server, obs-api
-Description: Open Build Service (webui)
- This is the web client for the OBS.
-
 Package: obs-productconverter
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, obs-server
+Architecture: all
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
 Description: Open Build Service (product definition utility)
  The obs_productconvert is a utility to create Kiwi- and Spec- files
  from a product definition.
 
 Package: obs-utils
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, osc, ruby1.8
+Architecture: all
+Depends: osc,
+         ruby,
+         ${misc:Depends},
+         ${shlibs:Depends}
 Description: Open Build Service (utilities)
  The obs-utils contains tools for Open Build Service. Including:
   * obs_mirror_project - a tool to copy the binary data of a project
-    from one obs to another
+    from one obs to another.
   * obs_project_update - a tool to copy a packages of a project from
-    one obs to another
+    one obs to another.

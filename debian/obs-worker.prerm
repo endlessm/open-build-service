@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/bin/sh -e
 
 if [ "$1" = "remove" ]; then
-    deluser --system --quiet obsworker
+    invoke-rc.d obsworker stop || true
 fi
+
+#DEBHELPER#

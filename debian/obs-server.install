@@ -1,16 +1,86 @@
-# install overview page template
-dist/overview.html.TEMPLATE	/srv/www/obs/overview/
-
-# install SLP registration files
-dist/sysconfig.obs-server       /etc/default/
-dist/obs.source_server.reg	/etc/slp.reg.d/
-dist/obs.repo_server.reg	/etc/slp.reg.d/
-
-# create symlink for product converter by rules file.
-
 # Install all backend parts. (remove useless files in rules file)
-src/backend/*			        /usr/lib/obs/server/
+# create symlink for product converter by rules file.
+# install SLP registration files
+# install overview page template
+dist/sysconfig.obs-server      /etc/default/
 
-# symlinks for obs_admin and obs_serverstatus
-debian/obs_admin		/usr/sbin
-debian/obs_serverstatus		/usr/sbin
+# Config files
+etc/logrotate.d/obs-server
+etc/slp.reg.d/
+usr/lib/obs/server/BSConfig.pm /etc/obs/
+
+usr/lib/obs/tests/appliance/
+usr/sbin/obs_admin
+usr/sbin/obs_serverstatus
+usr/lib/obs/server/plugins
+usr/lib/obs/server/BSAccess.pm
+usr/lib/obs/server/BSBuild.pm
+usr/lib/obs/server/BSCando.pm
+usr/lib/obs/server/BSConfiguration.pm
+usr/lib/obs/server/BSConfig.pm.template
+usr/lib/obs/server/BSDispatch.pm
+usr/lib/obs/server/BSEvents.pm
+usr/lib/obs/server/BSFileDB.pm
+usr/lib/obs/server/BSHTTP.pm
+usr/lib/obs/server/BSHandoff.pm
+usr/lib/obs/server/BSNotify.pm
+usr/lib/obs/server/BSPgp.pm
+usr/lib/obs/server/BSRPC.pm
+usr/lib/obs/server/BSServer.pm
+usr/lib/obs/server/BSServerEvents.pm
+usr/lib/obs/server/BSSrcdiff.pm
+usr/lib/obs/server/BSSSL.pm
+usr/lib/obs/server/BSSched
+usr/lib/obs/server/BSStdServer.pm
+usr/lib/obs/server/BSUtil.pm
+usr/lib/obs/server/BSVerify.pm
+usr/lib/obs/server/BSDB.pm
+usr/lib/obs/server/BSDBIndex.pm
+usr/lib/obs/server/BSXPathKeys.pm
+usr/lib/obs/server/BSWatcher.pm
+usr/lib/obs/server/BSXML.pm
+usr/lib/obs/server/BSXPath.pm
+usr/lib/obs/server/BSProductXML.pm
+usr/lib/obs/server/BSKiwiXML.pm
+usr/lib/obs/server/DESIGN
+usr/lib/obs/server/License
+usr/lib/obs/server/README
+usr/lib/obs/server/XML
+usr/lib/obs/server/bs_admin
+usr/lib/obs/server/bs_archivereq
+usr/lib/obs/server/bs_check_consistency
+usr/lib/obs/server/bs_deltastore
+usr/lib/obs/server/bs_dodup
+usr/lib/obs/server/bs_getbinariesproxy
+usr/lib/obs/server/bs_mergechanges
+usr/lib/obs/server/bs_mkarchrepo
+usr/lib/obs/server/bs_dispatch
+usr/lib/obs/server/bs_publish
+usr/lib/obs/server/bs_repserver
+usr/lib/obs/server/bs_sched
+usr/lib/obs/server/bs_serverstatus
+usr/lib/obs/server/bs_srcserver
+usr/lib/obs/server/bs_worker
+usr/lib/obs/server/bs_signer
+usr/lib/obs/server/bs_warden
+usr/lib/obs/server/worker
+usr/lib/obs/server/worker-deltagen.spec
+
+# obs-source_service
+usr/lib/obs/server/bs_service
+usr/lib/obs/server/call-service-in-lxc.sh
+
+# obs-common
+usr/lib/obs/server/setup-appliance.sh
+
+# systemd stuff
+debian/systemd/obsrepserver.service	/lib/systemd/system/
+debian/systemd/obssrcserver.service	/lib/systemd/system/
+debian/systemd/obsdispatcher.service	/lib/systemd/system/
+debian/systemd/obsscheduler@.service	/lib/systemd/system/
+debian/systemd/obswarden.service	/lib/systemd/system/
+debian/systemd/obsdodup.service		/lib/systemd/system/
+debian/systemd/obsservice.service	/lib/systemd/system/
+debian/systemd/obspublisher.service	/lib/systemd/system/
+debian/systemd/obssigner.service	/lib/systemd/system/
+

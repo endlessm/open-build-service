@@ -1,4 +1,4 @@
-ENABLED=1
+ENABLED=0
 
 # Nice level
 # Nicenesses range from -20 (most favorable  scheduling) to 19 (least favorable).
@@ -76,9 +76,9 @@ OBS_WORKER_TEST_MODE=""
 ## Default:     ""
 ## Config:      OBS
 #
-# This is /srv/obs/run by default
+# This is /run by default
 #
-OBS_RUN_DIR="/srv/obs/run"
+OBS_RUN_DIR="/run/obs"
 
 ## Path:        Applications/OBS
 ## Description: The base for OBS logging directory
@@ -107,7 +107,7 @@ OBS_USE_SLP="no"
 #
 # Enable caching requires a given directory here. Be warned, content will be
 # removed there !
-# 
+#
 OBS_CACHE_DIR=""
 
 ## Path:        Applications/OBS

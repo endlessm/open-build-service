@@ -1,0 +1,17 @@
+database.yml-settings.patch
+gemfile-tweaks.patch
+drop-test-and-development-depends.patch
+drop-ruby-hoptoad-notifier.patch
+rails-4-gem-assets.patch
+ruby2.3.patch
+FHS-path.patch
+drop-init-scripts.patch
+Rakefile-fix.patch
+ruby-interpreter.patch
+fix-embedded-js.patch
+fix-privacy-breach-piwik.patch
+jquery-ui.patch
+missing-codemirror-js.patch
+Do-not-ship-database.yml.patch
+localgem.patch
+disable-slp.patch

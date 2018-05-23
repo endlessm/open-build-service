@@ -5,90 +5,94 @@ export DH_OPTIONS
 export BUILD_ROOT=$(CURDIR)/debian/tmp
 
 %:
-	dh $@
+	dh $@ --parallel --with=systemd
+
+override_dh_auto_build:
+	# Place localgem
+	cp -a debian/localgem src/api/vendor/gems
+	dh_auto_build
+
+override_dh_auto_clean:
+	rm -rf src/api/vendor/gems
+	dh_auto_clean
 
 override_dh_install:
-	# Enable exec bit. May drop in next upstream release. (SIN: #14)
-	chmod a+x src/backend/obs-dod-check.pl
-	dh_install
+	# Drop useless files.
+	rm -f debian/tmp/etc/apache2/vhosts.d/obs.conf
+	rm -f debian/tmp/etc/init.d/obsapisetup
+	rm -f debian/tmp/usr/lib/obs/server/build/build exists
+	rm -f debian/tmp/usr/share/doc/packages/obs-devel/README.devel
+
+	dh_install --list-missing
+
 	dh_installdebconf
-	dh_installinit --name obsapidelayed
-	dh_installinit --name obsservice
-	dh_installinit --name obsrepserver
-	dh_installinit --name obsdispatcher
-	dh_installinit --name obsscheduler
-	dh_installinit --name obssigner
-	dh_installinit --name obswarden
-	dh_installinit --name obspublisher
-	dh_installinit --name obsworker --no-start
-	dh_installinit --name obssrcserver
+
+	# Move config files under /etc/obs/api/config/. And links with dh_link.
+	mv debian/obs-api/usr/share/obs/api/config/options.yml \
+			debian/obs-api/etc/obs/api/config/
+	mv debian/obs-api/usr/share/obs/api/config/production.sphinx.conf \
+			debian/obs-api/etc/obs/api/config/
+	mv debian/obs-api/usr/share/obs/api/config/thinking_sphinx.yml \
+			debian/obs-api/etc/obs/api/config/
+
+	# Remove log and tmp and create links under /var with dh_link.
+	rm -rf debian/obs-api/usr/share/obs/api/log
+	rm -rf debian/obs-api/usr/share/obs/api/tmp
+
 	# Rename dh_install installed web service config files.
 	# (new default since OBS 2.3)
 	mkdir -p debian/obs-api/etc/apache2/sites-available/
-	mv debian/obs-api/etc/apache2/vhosts.d/obs-apache2.conf \
+	cp debian/obs-apache2.conf \
 		debian/obs-api/etc/apache2/sites-available/obs.conf
 
 	mkdir -p debian/obs-api/usr/share/dbconfig-common/data/obs-api/install/
 	touch debian/obs-api/usr/share/dbconfig-common/data/obs-api/install/mysql
-
-	mkdir -p debian/obs-webui/usr/share/dbconfig-common/data/obs-webui/install/
-	touch debian/obs-webui/usr/share/dbconfig-common/data/obs-webui/install/mysql
-
-	# (default until OBS 2.1)
-	mv debian/obs-api/etc/lighttpd/vhosts.d/obs-lighttpd.conf \
-		debian/obs-api/etc/lighttpd/vhosts.d/obs.conf
-	mv debian/obs-api/etc/lighttpd/vhosts.d/rails.include \
-		debian/obs-api/etc/lighttpd/vhosts.d/rails.inc
+	cp debian/obs-server/usr/lib/obs/server/BSConfig.pm.template \
+		debian/obs-server/etc/obs/BSConfig.pm
 
 	# Rename sysconfig file
 	mv debian/obs-server/etc/default/sysconfig.obs-server \
 		debian/obs-server/etc/default/obs-server
 
-	# Remove activexml symlinks from webui and api.
-	rm debian/obs-api/srv/www/obs/api/lib/activexml
-	rm debian/obs-webui/srv/www/obs/webui/lib/activexml
-	mkdir debian/obs-api/srv/www/obs/api/lib/activexml
-	mkdir debian/obs-webui/srv/www/obs/webui/lib/activexml
-	cp -a src/activexml/* debian/obs-api/srv/www/obs/api/lib/activexml
-	cp -a src/activexml/* debian/obs-webui/srv/www/obs/webui/lib/activexml
-
-	# the git webinterface tries to connect to api.opensuse.org by default
-	install -m 0644 $(CURDIR)/dist/webui-production.rb \
-		debian/obs-webui/srv/www/obs/webui/config/environments/production.rb
-
-	# set default api on localhost for the webui
-	mv debian/obs-api/srv/www/obs/api/files/distributions.xml.template \
-		debian/obs-api/srv/www/obs/api/files/distributions.xml
-	mkdir -p debian/obs-api/etc/obs/api/
-	mv debian/obs-api/srv/www/obs/api/config \
-		debian/obs-api/etc/obs/api/config
-	mkdir -p debian/obs-webui/etc/obs/webui/
-	mv debian/obs-webui/srv/www/obs/webui/config \
-		debian/obs-webui/etc/obs/webui/config
-	sed -i 's,FRONTEND_HOST.*,FRONTEND_HOST = "127.0.42.2",' \
-		debian/obs-webui/etc/obs/webui/config/environments/production.rb
-	sed -i 's,FRONTEND_PORT.*,FRONTEND_PORT = 444,' \
-		debian/obs-webui/etc/obs/webui/config/environments/production.rb
-	sed -i 's,FRONTEND_PROTOCOL.*,FRONTEND_PROTOCOL = "https",' \
-		debian/obs-webui/etc/obs/webui/config/environments/production.rb
-	sed -i 's,api.opensuse.org,127.0.42.2,' \
-		debian/obs-webui/srv/www/obs/webui/app/helpers/package_helper.rb
-
-	# these config files must not be hard linked
-	install src/api/config/options.yml.example \
-		debian/obs-api/etc/obs/api/config/options.yml
-	install src/webui/config/options.yml.example \
-		debian/obs-webui/etc/obs/webui/config/options.yml
-
 	# turn duplicates into hard links
-	fdupes debian/obs-api/srv/www/obs
+	fdupes debian/obs-api/usr/share/obs/
 
-	# Remove useless backend parts.
-	rm -rf  debian/obs-server/usr/lib/obs/server/build
-	ln -sf /usr/lib/build debian/obs-server/usr/lib/obs/server/build
-	rm -r  debian/obs-server/usr/lib/obs/server/testdata
-	rm -f  debian/obs-server/usr/lib/obs/server/Makefile.PL
-	rm -f  debian/obs-server/usr/lib/obs/server/bs_productconvert
-	mv debian/obs-server/usr/lib/obs/server/BSConfig.pm.template \
-		debian/obs-server/etc/obs/BSConfig.pm
+	# Clean up vcs control file
+	find debian/obs-api -name '.gitignore' -type f | xargs rm -f
 
+	# fix permissions
+	chmod a-x debian/obs-api/usr/share/obs/api/script/update_bento.sh
+	chmod a-x debian/obs-api/usr/share/obs/api/Rakefile
+	# Clean up "extra" license
+	rm debian/obs-server/usr/lib/obs/server/License
+
+	# Fix Mark scripts as executable until upstream fixes
+	chmod a+x debian/obs-server/usr/lib/obs/tests/appliance/*t*
+
+override_dh_systemd_enable:
+	dh_systemd_enable -p obs-server \
+		obsrepserver.service \
+		obssrcserver.service \
+		obsdispatcher.service \
+		obswarden.service \
+		obsdodup.service \
+		obspublisher.service \
+		obssigner.service
+
+override_dh_installinit:
+	dh_installinit --name obsapidelayed --no-start
+	dh_installinit --name obsworker --no-start
+
+override_dh_systemd_start:
+	dh_systemd_start -p obs-server \
+		obsrepserver.service \
+		obssrcserver.service \
+		obsdispatcher.service \
+		obswarden.service \
+		obsdodup.service \
+		obspublisher.service \
+		obssigner.service
+
+
+override_dh_auto_test:
+	 dh_auto_test || true # temporary ignore

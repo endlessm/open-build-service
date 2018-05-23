@@ -1,3 +1,137 @@
+open-build-service (2.7.4-2) unstable; urgency=medium
+
+  * debian/obs-server.postinst: make sure multi-user.target.wants
+    directory created before creating symlink manually. (Closes:#870841)
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Sun, 06 Aug 2017 08:03:37 +0800
+
+open-build-service (2.7.4-1) unstable; urgency=medium
+
+  * Merging upstream version 2.7.4.
+  * debian/control: Drop memcached depends from obs-server.
+  * debian/control: make obs-server recommends: on gnupg2. (Closes:#859711)
+  * debian/control: make obs-server recommends: on dpkg-dev.
+    (Closes:#855828)
+  * Refreshed gemfile-tweaks.patch. (Closes:#869051)
+  * Refreshed drop-ruby-hoptoad-notifier.patch.
+  * obs-utils: ship obs_mirror_project.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Fri, 04 Aug 2017 03:40:11 +0800
+
+open-build-service (2.7.1-10) unstable; urgency=medium
+
+  * Fix logrotate, refine postrm, prerm script to ensure config and log
+    files removed after purged. (Closes:#851356)
+  * Fixed obs-worker failed to start issue. (Closes: #851761)
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 26 Jan 2017 01:17:48 +0800
+
+open-build-service (2.7.1-9) unstable; urgency=medium
+
+  * obs-worker: drop slptool from depends as it's scheduled for removal
+    from Debian. (Closes: #848855)
+  * disable-slp.patch: do not use SLP in obs-serverconf as Debian drop
+    slptool from archive. (Closes: #848855)
+  * Added debian/NEWS.
+  * drop ruby-interpreter from depends as it's not exist.
+  * Set Architecture: all.
+  * Drop breaks on obs-webui.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 22 Dec 2016 14:35:54 +0800
+
+open-build-service (2.7.1-8) unstable; urgency=medium
+
+  * jquery-ui.patch: migrate jquery-ui-rails from 5.0.5 to 6.0.1.
+    (Closes: #848510)
+  * debian/control: build-deps on the metapackage default-mysql-*.
+    (Closes: #848460)
+  * Refine postinst script to avoid modifies files it has shipped. And
+    also not fails during installation without setup database via
+    dbconfig-common. (Closes: #847687)
+  * Added README.Debian.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Mon, 19 Dec 2016 15:19:40 +0800
+
+open-build-service (2.7.1-7) unstable; urgency=medium
+
+  [ Antonio Terceiro ]
+  * remove myself from Uploaders:
+
+  [ Andrew Lee (李健秋) ]
+  * Run commands when purge instead of remove. (Closes: #847688)
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 15 Dec 2016 18:05:03 +0800
+
+open-build-service (2.7.1-6) experimental; urgency=medium
+
+  * Move log, tmp and config files out of /usr and creates links instead.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 08 Dec 2016 19:13:53 +0800
+
+open-build-service (2.7.1-5) experimental; urgency=medium
+
+  * Adjust postrm and prerm scripts to remove users, group and data when
+    user purged these packages.
+  * debian/control: drop versioned depends.
+  * debian/control: drop ruby-jquery-datatables-rails from depends.
+  * Embedded ruby-jquery-datatables-rails 1.12.2 as local gem.
+  * Drop jquery.ui.widget.patch. Update new path in jquery-ui.patch.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 17 Nov 2016 03:58:15 +0800
+
+open-build-service (2.7.1-4) experimental; urgency=medium
+
+  * debian/control: move sphinxsearch deps from obs-server to obs-api as
+    it's needed search function for the webui instead of backend server.
+  * Fixed database.yml generatation while reinstall.
+  * Move overview.html.TEMPLATE file from obs-server to obs-api.
+  * debian/control: obs-server shouldn't depends on obs-api. It should be
+    able to install independently.
+  * Do not ship database.yml as it should generates from template.
+  * debian/control: depends on default-mysql-client and recommends on
+    default-mysql-server as the old package name has been obsoleted.
+  * debian/control: added depends on lsb-base for init.d scripts calls lsb
+    functions.
+  * debian/obs-api.postrm: clean up api folder while purge.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Mon, 24 Oct 2016 14:55:03 +0800
+
+open-build-service (2.7.1-3) experimental; urgency=medium
+
+  * jquery.ui.widget.patch: added missing jquery.ui.widget.
+    (Closes: #839143, #839144)
+  * missing-codemirror-js.patch: added missing
+    codemirror/addons/mode/simple.js. (Closes: #839133)
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 20 Oct 2016 05:12:47 +0800
+
+open-build-service (2.7.1-2) experimental; urgency=medium
+
+  * Generate clockworkd.clock.output log file. (Closes:#839211)
+  * debian/obs-api.postinst: set config/database.yml own by www-data.
+    (Closes: #839163)
+  * debian/obs-api.obsapidelayed.init: calls rake instead of rake.ruby2.3.
+    (Closes: #839166)
+  * debian/obs-api.postinst: set correct permission in tmp dir for
+    delayed_job start up correctly. (Closes: #839174)
+  * debian/obs-api.obsapidelayed.init: specific directory to API_ROOT for
+    clockworkd to run. (Closes: #839219)
+  * Apply fix-sphinx.patch: fix brackets in Makefile that prepare for sphinx
+    to run.
+  * debian/obs-worker.obsworker.default: update OBS_RUN_DIR.
+  * debian/obs-worker.obsworker.init: set correct permission for
+    obsworker to run.
+  * debian/obs-api.postinst: drop duplicate pathfind function.
+  * debian/obs-api.postinst: drop path in command.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Fri, 30 Sep 2016 18:02:41 +0800
+
+open-build-service (2.7.1-1) experimental; urgency=low
+
+  * New upstream release. (Closes: #838022)
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Sat, 17 Sep 2016 06:54:06 +0800
+
 open-build-service (2.3.8-0endless1) unstable; urgency=medium
 
   * Release version 2.3.8-0endless1. There are no changes from the

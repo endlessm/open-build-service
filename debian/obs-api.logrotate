@@ -1,5 +1,4 @@
-
-/srv/www/obs/api/log/*[._]log {
+/var/log/obs/*log {
   compress
   dateext
   maxage 365
@@ -8,7 +7,5 @@
   notifempty
   missingok
   copytruncate
-  create 664 www-data www-data
-  sharedscripts
 }
 

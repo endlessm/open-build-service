@@ -1,5 +1,6 @@
-dist/README.UPDATERS
-dist/README.SETUP
-ReleaseNotes-*
-README
 AUTHORS
+ReleaseNotes-*
+dist/README.SETUP
+dist/README.UPDATERS
+src/backend/README
+debian/README.Debian
