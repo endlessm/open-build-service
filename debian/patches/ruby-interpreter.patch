@@ -68,3 +68,19 @@
  ENV['RAILS_ENV'] ||= 'test'
  ENV['origin_RAILS_ENV'] ||= ENV['RAILS_ENV']
  ENV['LC_ALL'] = 'C'
+--- a/docs/api/restility/bin/rest_doc
++++ b/docs/api/restility/bin/rest_doc
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env ruby2.3
++#!/usr/bin/env ruby
+ 
+ require 'optparse'
+ require 'rubygems'
+--- a/docs/api/restility/bin/rest_test
++++ b/docs/api/restility/bin/rest_test
+@@ -1,4 +1,4 @@
+-#!/usr/bin/ruby2.3
++#!/usr/bin/env ruby
+ 
+ require 'optparse'
+ require 'rubygems'
