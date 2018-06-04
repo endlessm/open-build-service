@@ -1,3 +1,13 @@
+open-build-service (2.7.4-2endless1) unstable; urgency=medium
+
+  * Resync with debian (T14726). Remaining changes:
+    - Keep xz-utils dependency in obs-worker. This should go upstream
+      since obs-build uses unxz on tar.xz files.
+    - Update ruby-interpreter.patch to adjust shebangs for API docs build
+      (Debian #894778)
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Mon, 04 Jun 2018 11:36:32 -0500
+
 open-build-service (2.7.4-2) unstable; urgency=medium
 
   * debian/obs-server.postinst: make sure multi-user.target.wants
