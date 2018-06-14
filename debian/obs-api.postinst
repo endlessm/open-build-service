@@ -19,7 +19,7 @@ if [ ! -e "$SECRET_KEY" ]; then
     ln -s $SECRET_KEY /usr/share/obs/api/config/secret.key
 fi
   chmod 0640 $SECRET_KEY
-  chown nobody:www-data $SECRET_KEY
+  chown root:www-data $SECRET_KEY
 
 # Generate log files
   touch /var/log/obs/access.log
