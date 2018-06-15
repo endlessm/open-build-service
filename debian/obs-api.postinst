@@ -22,11 +22,7 @@ fi
   chown root:www-data $SECRET_KEY
 
 # Generate log files
-  touch /var/log/obs/access.log
   touch /var/log/obs/backend_access.log
-  touch /var/log/obs/delayed_job.log
-  touch /var/log/obs/error.log
-  touch /var/log/obs/lastevents.access.log
   touch /var/log/obs/production.log
   touch /var/log/obs/production.searchd.log
   touch /var/log/obs/production.searchd.query.log
