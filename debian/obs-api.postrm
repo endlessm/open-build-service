@@ -56,6 +56,7 @@ if [ "$1" = "purge" ]; then
     rm -f /var/log/obs/delayed_job.log*
     rm -f /var/log/obs/error.log*
     rm -f /var/log/obs/lastevents.access.log*
+    rm -f /var/log/obs/passenger.log*
     rm -f /var/log/obs/production.log*
     rm -f /var/log/obs/production.searchd.log*
     rm -f /var/log/obs/production.searchd.query.log*
