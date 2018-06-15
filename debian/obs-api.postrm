@@ -53,6 +53,7 @@ if [ "$1" = "purge" ]; then
     rm -f /var/log/obs/access.log*
     rm -f /var/log/obs/backend_access.log*
     rm -f /var/log/obs/db_setup.log*
+    rm -f /var/log/obs/db_migrate.log*
     rm -f /var/log/obs/delayed_job.log*
     rm -f /var/log/obs/error.log*
     rm -f /var/log/obs/lastevents.access.log*
