@@ -35,6 +35,11 @@ fi
   touch /var/log/obs/clockworkd.clock.output
   chown www-data:www-data /var/log/obs/clockworkd.clock.output
 
+# Sphinx configuration, sphinx copies the database credentials here
+touch /etc/obs/api/config/production.sphinx.conf
+chown www-data:root /etc/obs/api/config/production.sphinx.conf
+chmod 0600 /etc/obs/api/config/production.sphinx.conf
+
 # Config Database with dbconfig-common
 . /usr/share/debconf/confmodule
 . /usr/share/dbconfig-common/dpkg/postinst.mysql
