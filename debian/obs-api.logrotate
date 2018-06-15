@@ -1,4 +1,4 @@
-/var/log/obs/*log {
+/var/log/obs/*log /var/log/obs/*output {
   compress
   dateext
   maxage 365
