@@ -23,11 +23,17 @@ fi
 
 # Generate log files
   touch /var/log/obs/backend_access.log
+  chown www-data:www-data /var/log/obs/backend_access.log
   touch /var/log/obs/production.log
+  chown www-data:www-data /var/log/obs/production.log
   touch /var/log/obs/production.searchd.log
+  chown www-data:www-data /var/log/obs/production.searchd.log
   touch /var/log/obs/production.searchd.query.log
+  chown www-data:www-data /var/log/obs/production.searchd.query.log
   touch /var/log/obs/production.sphinx.pid
+  chown www-data:www-data /var/log/obs/production.sphinx.pid
   touch /var/log/obs/clockworkd.clock.output
+  chown www-data:www-data /var/log/obs/clockworkd.clock.output
 
 # Config Database with dbconfig-common
 . /usr/share/debconf/confmodule
