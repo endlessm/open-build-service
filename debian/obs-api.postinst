@@ -40,6 +40,12 @@ touch /etc/obs/api/config/production.sphinx.conf
 chown www-data:root /etc/obs/api/config/production.sphinx.conf
 chmod 0600 /etc/obs/api/config/production.sphinx.conf
 
+# Writable data directories
+# FIXME: These should all be in /var
+chown -R www-data:www-data /usr/share/obs/api/db
+chown -R www-data:www-data /usr/share/obs/api/public
+chown -R www-data:www-data /var/cache/obs/tmp
+
 # Config Database with dbconfig-common
 . /usr/share/debconf/confmodule
 . /usr/share/dbconfig-common/dpkg/postinst.mysql
