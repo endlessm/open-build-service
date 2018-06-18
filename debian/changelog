@@ -1,3 +1,40 @@
+open-build-service (2.7.4-2endless2) unstable; urgency=medium
+
+  * Remove obs-api.cron.d since the tasks triggered are now handled by the
+    app itself.
+  * Depend on ruby-sanitize 3.0.0 since the Sanitize::Config::merge method
+    is needed.
+  * Move apache Passenger configuration inside vhost so it doesn't apply
+    globally.
+  * Set apache Passenger user to www-data to match apache itself and
+    obsapidelayed. This simplifies permission handling.
+  * Make secret.key and database.yml only writable by root and only
+    readable by www-data group.
+  * Don't create unused log files in obs-api.postinst.
+  * Set correct log file ownership in obs-api.postinst.
+  * Rotate clockworkd.clock.output file with other obs-api logs.
+  * Set secure permissions for production.sphinx.conf since database
+    credentials are copied there from database.yml.
+  * Make obs-api data directories writable in postinst by www-data like in
+    rake-tasks.sh. The latter is not run automatically.
+  * Remove duplicate apache configuration lines.
+  * Remove apache ssl_request_log CustomLog using nonexistent ssl_combined
+    LogFormat nickname.
+  * Use combined LogFormat for apache access.
+  * Set apache PassengerLogFile to /var/log/obs/passenger.log so they're
+    not sent to the global apache error log.
+  * Always update Gemfile.lock after installation. If the system ruby
+    modules have changed, then the app will refuse to start. Always update
+    Gemfile.lock in the postinst and add a trigger so it's run whenever
+    ruby modules are updated.
+  * Actually apply fix-sphinx.patch. This was added in 2.7.1-2 but wasn't
+    actually in the series file. That means that the obs-api package still
+    has a directory actually named "sphinx{,/production}".
+  * Purge db_migrate.log file since rake-tasks.sh generates it on DB
+    migrations.
+
+ -- Dan Nicholson <nicholson@endlessm.com>  Mon, 18 Jun 2018 06:57:42 -0500
+
 open-build-service (2.7.4-2endless1) unstable; urgency=medium
 
   * Resync with debian (T14726). Remaining changes:
