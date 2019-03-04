@@ -91,12 +91,15 @@ class BsRequest < ActiveRecord::Base
     unless self.creator
       errors.add(:creator, 'No creator defined')
     end
-    user = User.get_by_login self.creator
-    unless user
-      errors.add(:creator, "Invalid creator specified #{self.creator}")
-    end
-    unless user.is_active?
-      errors.add(:creator, "Login #{user.login} is not an active user")
+    # Allow admins to create requests for deleted or inactive users
+    unless User.current.is_admin?
+      user = User.get_by_login self.creator
+      unless user
+        errors.add(:creator, "Invalid creator specified #{self.creator}")
+      end
+      unless user.is_active?
+        errors.add(:creator, "Login #{user.login} is not an active user")
+      end
     end
   end
 
