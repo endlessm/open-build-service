@@ -351,9 +351,9 @@ case "$1" in
 	    popd > /dev/null
         done
 	wait
-        killall bs_worker 2>/dev/null
+        killall bs_worker 2>/dev/null || true
         sleep 2
-        killall -s 9 bs_worker 2>/dev/null
+        killall -s 9 bs_worker 2>/dev/null || true
         screen -S obsworker -X quit
     ;;
     restart)
