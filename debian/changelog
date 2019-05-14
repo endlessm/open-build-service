@@ -1,3 +1,9 @@
+open-build-service (2.7.4-2endless3) UNRELEASED; urgency=medium
+
+  * Pin the version of minitest to that packaged by Debian.
+
+ -- Nimrod Adar <nimrod@endlessm.com>  Tue, 14 May 2019 12:16:13 +0300
+
 open-build-service (2.7.4-2endless2) unstable; urgency=medium
 
   * Remove obs-api.cron.d since the tasks triggered are now handled by the
